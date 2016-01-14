@@ -1,0 +1,176 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication7
+{
+    class Program
+    {
+        public static string some_string;
+        public static int money;
+        static void Main(string[] args)
+        {
+            stash ob = new stash();
+            ob.cake.name = "cake";
+            ob.cookies.name = "cookies";
+            ob.wafers.name = "wafers";
+
+            ob.cake.numbers = 4;
+            ob.cookies.numbers = 3;
+            ob.wafers.numbers = 10;
+
+            ob.cake.price = 50;
+            ob.cookies.price = 10;
+            ob.wafers.price = 30;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("У вас 150 рублей. Введите монеты номиналом 1,2,5,10 рублей."+
+                              " После введения всех монет напишите 'start', чтобы приступить к выбору из этого меню:");
+            Console.WriteLine("cake - 50 рублей в наличии {0} шт, cookies - 10 рублей в наличии {1} шт," +
+                              " wafers - 30 рублей в наличии {2} шт ", ob.cake.numbers,ob.cookies.numbers,ob.wafers.numbers);
+            Console.ForegroundColor = ConsoleColor.White;
+            while (true)
+            {
+                some_string = Console.ReadLine();
+                if (some_string=="start")
+                    break;
+               
+                    try { money = Convert.ToInt32(some_string); }
+                    catch 
+                    { 
+                        Console.WriteLine("Недопустимый формат ввода. Вводите числа");
+                         continue;
+                    }
+
+                    if ((money == 1 | money == 2 | money == 5 | money == 10) & (ob.cash+money <= 150))
+                    {
+                        ob.Get_money(money);
+                        Console.WriteLine("Cash " + ob.cash);
+                    }
+                    else
+                        Console.WriteLine("Недопустимый номинал монеты, или вы не обладаете большей суммой");
+            }
+                   
+            
+            
+            
+            
+                   while (true)
+                   {
+                       Console.ForegroundColor = ConsoleColor.Green;
+                       Console.WriteLine("'cake' - 50 рублей в наличии {0} шт, 'cookies' - 10 рублей в наличии {1} шт," +
+                                         " 'wafers' -"+
+                                         " 30 рублей в наличии {2} шт ", ob.cake.numbers, ob.cookies.numbers, ob.wafers.numbers);
+                             Console.WriteLine("Введите наименование, которое вы выбрали. Внесено {0}",ob.cash);
+                             Console.ForegroundColor = ConsoleColor.White;
+                        some_string = Console.ReadLine();
+                        if (some_string == ob.cake.name)
+                        {
+                            if (ob.cash >= ob.cake.price)
+                            {
+                                if (ob.cake.numbers != 0)
+                                {
+                                    Console.WriteLine("Вот ваш кекс, можете купить что-то еще, или попросить сдачу");
+                                    ob.Give_money(ob.cake.price);
+                                    ob.cake.numbers--;
+                                }
+                                else
+                                    Console.WriteLine("Данное наименование закончилось, выберете что-то еще, или возьмите сдачу");
+                            }
+                            else
+                                Console.WriteLine("Внесено недостаточно денег для покупки");
+                        }
+                      
+
+
+
+
+                        if (some_string == ob.cookies.name)
+                        {
+                            if (ob.cash >= ob.cookies.price)
+                            {
+                                if (ob.cookies.numbers != 0)
+                                {
+                                Console.WriteLine("Вот ваше печенье, можете купить что-то еще, или попросить сдачу");
+                                ob.Give_money(ob.cookies.price);
+                                ob.cookies.numbers--;
+                              
+                                }
+                                else
+                                    Console.WriteLine("Данное наименование закончилось, выберете что-то еще, или возьмите сдачу");
+                            }
+                            else
+                                Console.WriteLine("Внесено недостаточно денег для покупки");
+                        }
+
+
+                        if (some_string == ob.wafers.name)
+                        {
+                            if (ob.cash >= ob.wafers.price)
+                            {
+                                if ((ob.wafers.numbers != 0))
+                                {
+                                    Console.WriteLine("Вот ваши вафли, можете купить что-то еще, или попросить сдачу(short_change)");
+                                    ob.Give_money(ob.wafers.price);
+                                    ob.wafers.numbers--;
+                                }
+                                else
+                                    Console.WriteLine("Данное наименование закончилось, выберете что-то еще, или возьмите сдачу");
+                            }
+                            else
+                                Console.WriteLine("Внесено недостаточно денег для покупки");
+                        }
+                        if (some_string == "short_change")
+                        {
+                            Console.WriteLine("Ваша сдача: {0} 10-рублевых монет, {1} - 5 рублевых монет, {2} - 2 рублевых, {3}" +
+                                "- 1 рублевых, итого {4}", ob.cash / 10, ob.cash % 10 / 5, ob.cash % 10 % 5 / 2, ob.cash % 10 % 5 % 2, ob.cash);
+                            Console.ReadKey();
+                            break;
+                            
+                        }
+                        if (some_string != "short_change" & some_string != ob.cake.name & some_string != ob.cookies.name & some_string != ob.wafers.name)
+                            Console.WriteLine("Выбранного вами наименования не существует в меню");
+                    
+                  
+
+
+
+
+
+                }
+            }
+        }
+    }
+
+
+    class meal
+    {
+
+        public int price;
+        public int numbers;
+        public string name;
+
+
+
+    }
+
+    class stash
+    {
+        public meal cake = new meal();
+        public meal cookies = new meal();
+        public meal wafers = new meal();
+        public int cash;
+        public void Get_money(int get_money)
+        {
+            cash += get_money;
+
+        }
+
+        public void Give_money(int give_money)
+        {
+            cash -= give_money;
+        }
+        
+    }
+
